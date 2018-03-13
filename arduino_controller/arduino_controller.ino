@@ -19,31 +19,61 @@ int intKeys[ROWS][COLS] = {
   {7, 8, 9, 30},
   {50, 0, 60, 40}
 };
-const int buttonPin = 2;
-const int indicatorPin = 3;
+
+const int pitchButtonPin = 3;
+const int pitchLevelPin = A0;
+const int reverbButtonPin = 2;
+const int indicatorReverbPin = 4;
+const int indicatorPitchPin = 13;
 bool activateReverb = false;
+bool activatePitch = false;
+int pitchValue;
+
 Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
 void setup() {
   Serial.begin(9600);
-  pinMode(buttonPin, INPUT_PULLUP);
-  pinMode(indicatorPin, OUTPUT);
+  pinMode(pitchButtonPin, INPUT_PULLUP);
+  pinMode(reverbButtonPin, INPUT_PULLUP);
+  pinMode(indicatorReverbPin, OUTPUT);
+  pinMode(indicatorPitchPin, OUTPUT);
+  pinMode(pitchLevelPin, INPUT);
 }
 
 void loop() {
+
+  if (activatePitch) {
+    pitchValue = analogRead(pitchLevelPin);
+    pitchValue = map(pitchValue, 0, 1023, 250, 150);
+    Serial.write(pitchValue);
+    Serial.flush();
+  }
+  
   char key = customKeypad.getKey();
   if (key) {
     Serial.write(keyToInt(key));
     Serial.flush();
   }
 
-  if (digitalRead(buttonPin) == LOW) {
+  if (digitalRead(pitchButtonPin) == LOW) {
+    activatePitch = !activatePitch;
+    Serial.write(200);
+    Serial.flush();
+    if (activatePitch) {
+      digitalWrite(indicatorPitchPin, HIGH);
+    } else {
+      digitalWrite(indicatorPitchPin, LOW);
+    }
+    delay(250);
+  }
+
+  if (digitalRead(reverbButtonPin) == LOW) {
     activateReverb = !activateReverb;
     if (activateReverb) {
-      digitalWrite(indicatorPin, HIGH);
+      digitalWrite(indicatorReverbPin, HIGH);
       Serial.write(101);
     } else {
-      digitalWrite(indicatorPin, LOW);
+      digitalWrite(indicatorReverbPin, LOW);
       Serial.write(100);
     }
     Serial.flush();
