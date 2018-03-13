@@ -13,10 +13,16 @@ char hexaKeys[ROWS][COLS] = {
 byte rowPins[ROWS] = {5, 6, 7, 8};
 byte colPins[COLS] = {9, 10, 11, 12};
 
+int intKeys[ROWS][COLS] = {
+  {1, 2, 3, 10},
+  {4, 5, 6, 20},
+  {7, 8, 9, 30},
+  {50, 0, 60, 40}
+};
 const int buttonPin = 2;
 const int indicatorPin = 3;
 bool activateReverb = false;
-Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS); 
+Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
 void setup() {
   Serial.begin(9600);
@@ -27,35 +33,7 @@ void setup() {
 void loop() {
   char key = customKeypad.getKey();
   if (key) {
-    if (key == '0'){
-      Serial.write(0);
-    } else if (key == '1') {
-      Serial.write(1);
-    } else if (key == '2') {
-      Serial.write(2);
-    } else if (key == '3') {
-      Serial.write(3);
-    } else if (key == '4') {
-      Serial.write(4);
-    } else if (key == '5') {
-      Serial.write(5);
-    } else if (key == '6') {
-      Serial.write(6);
-    } else if (key == '7') {
-      Serial.write(7);
-    } else if (key == '8') {
-      Serial.write(8);
-    } else if (key == '9') {
-      Serial.write(9);
-    } else if (key == 'A') {
-      Serial.write(10);
-    } else if (key == 'B') {
-      Serial.write(20);
-    } else if (key == 'C') {
-      Serial.write(30);
-    } else if (key == 'D') {
-      Serial.write(40);
-    }
+    Serial.write(keyToInt(key));
     Serial.flush();
   }
 
@@ -63,13 +41,23 @@ void loop() {
     activateReverb = !activateReverb;
     if (activateReverb) {
       digitalWrite(indicatorPin, HIGH);
-      Serial.write(51);
+      Serial.write(101);
     } else {
       digitalWrite(indicatorPin, LOW);
-      Serial.write(50);
+      Serial.write(100);
     }
     Serial.flush();
     delay(250);
   }
 
+}
+
+int keyToInt(char key) {
+  for (int i = 0 ; i < ROWS ; i++) {
+    for (int j = 0 ; j < COLS ; j++) {
+      if (hexaKeys[i][j] == key) {
+        return intKeys[i][j];
+      }
+    }
+  }
 }
