@@ -2,7 +2,6 @@
 
 const byte ROWS = 4; //four rows
 const byte COLS = 4; //four columns
-String key;
 
 char hexaKeys[ROWS][COLS] = {
   {'1','2','3','A'},
@@ -10,76 +9,60 @@ char hexaKeys[ROWS][COLS] = {
   {'7','8','9','C'},
   {'*','0','#','D'}
 };
-byte rowPins[ROWS] = {5, 6, 7, 8};
-byte colPins[COLS] = {9, 10, 11, 12};
+byte rowPins[ROWS] = {9, 8, 7, 6};
+byte colPins[COLS] = {5, 4, 3, 2};
 
 int intKeys[ROWS][COLS] = {
   {1, 2, 3, 10},
-  {4, 5, 6, 20},
-  {7, 8, 9, 30},
-  {50, 0, 60, 40}
+  {4, 5, 6, 12},
+  {7, 8, 9, 13},
+  {15, 0, 16, 14}
 };
 
-const int pitchButtonPin = 3;
+const int pitchInterrupterPin = 53;
+const int reverbInterrupterPin = 52;
 const int pitchLevelPin = A0;
-const int reverbButtonPin = 2;
-const int indicatorReverbPin = 4;
-const int indicatorPitchPin = 13;
-bool activateReverb = false;
-bool activatePitch = false;
+const int reverbLevelPin = A1;
 int pitchValue;
+int  reverbValue;
+char key;
 
 Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
 void setup() {
   Serial.begin(9600);
-  pinMode(pitchButtonPin, INPUT_PULLUP);
-  pinMode(reverbButtonPin, INPUT_PULLUP);
-  pinMode(indicatorReverbPin, OUTPUT);
-  pinMode(indicatorPitchPin, OUTPUT);
+  pinMode(pitchInterrupterPin, INPUT);
+  pinMode(reverbInterrupterPin, INPUT);
   pinMode(pitchLevelPin, INPUT);
+  pinMode(reverbLevelPin, INPUT);
 }
 
 void loop() {
-
-  if (activatePitch) {
-    pitchValue = analogRead(pitchLevelPin);
-    pitchValue = map(pitchValue, 0, 1023, 250, 150);
-    Serial.write(pitchValue);
-    Serial.flush();
-  }
-  
-  char key = customKeypad.getKey();
+  key = customKeypad.getKey();
   if (key) {
     Serial.write(keyToInt(key));
     Serial.flush();
   }
 
-  if (digitalRead(pitchButtonPin) == LOW) {
-    activatePitch = !activatePitch;
-    Serial.write(200);
+  if (digitalRead(pitchInterrupterPin) == HIGH) {
+    pitchValue = analogRead(pitchLevelPin);
+    pitchValue = map(pitchValue, 0, 1020, 251, 151);
+    Serial.write(pitchValue);
     Serial.flush();
-    if (activatePitch) {
-      digitalWrite(indicatorPitchPin, HIGH);
-    } else {
-      digitalWrite(indicatorPitchPin, LOW);
-    }
-    delay(250);
+  } else {
+    Serial.write(201);
+    Serial.flush();
   }
 
-  if (digitalRead(reverbButtonPin) == LOW) {
-    activateReverb = !activateReverb;
-    if (activateReverb) {
-      digitalWrite(indicatorReverbPin, HIGH);
-      Serial.write(101);
-    } else {
-      digitalWrite(indicatorReverbPin, LOW);
-      Serial.write(100);
-    }
+  if (digitalRead(reverbInterrupterPin) == HIGH) {
+    reverbValue = analogRead(reverbLevelPin);
+    reverbValue = map(reverbValue, 0, 1020, 150, 50);
+    Serial.write(reverbValue);
     Serial.flush();
-    delay(250);
+  } else {
+    Serial.write(50);
+    Serial.flush();
   }
-
 }
 
 int keyToInt(char key) {
