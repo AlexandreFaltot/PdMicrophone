@@ -3,6 +3,10 @@
 
 const byte ROWS = 4; //four rows
 const byte COLS = 4; //four columns
+const int reverbDesactivated = 20;
+const int reverbActivated = 21;
+const int pitchDesactivated = 30;
+const int pitchActivated = 31;
 
 char hexaKeys[ROWS][COLS] = {
   {'1','2','3','A'},
@@ -34,9 +38,9 @@ LiquidCrystal lcd(32, 30, 28, 26, 24, 22);
 void setup() {
   Serial.begin(9600);
   lcd.begin(16, 2);
-  lcd.print(" PureData Micro");
+  lcd.print(" PureData Micro ");
   lcd.setCursor(0, 1);
-  lcd.print("   Controller");
+  lcd.print("   Controller   ");
   pinMode(pitchInterrupterPin, INPUT);
   pinMode(reverbInterrupterPin, INPUT);
   pinMode(pitchLevelPin, INPUT);
@@ -55,6 +59,8 @@ void loop() {
   if (digitalRead(pitchInterrupterPin) == HIGH) {
     pitchValue = analogRead(pitchLevelPin);
     pitchValue = map(pitchValue, 0, 1020, 251, 151);
+    Serial.write(pitchActivated);
+    Serial.flush();
     Serial.write(pitchValue);
     Serial.flush();
     float pitch = ((float) pitchValue - 201) / 10;
@@ -64,6 +70,8 @@ void loop() {
       lcd.print("Pitch:      +" + String(pitch, 2));
     }
   } else {
+    Serial.write(pitchDesactivated);
+    Serial.flush();
     Serial.write(201);
     Serial.flush();
     lcd.print("Pitch:       OFF");
@@ -73,6 +81,8 @@ void loop() {
   if (digitalRead(reverbInterrupterPin) == HIGH) {
     reverbValue = analogRead(reverbLevelPin);
     reverbValue = map(reverbValue, 0, 1020, 150, 50);
+    Serial.write(reverbActivated);
+    Serial.flush();
     Serial.write(reverbValue);
     Serial.flush();
     float reverb = ((float) reverbValue - 50) / 100;
@@ -83,7 +93,7 @@ void loop() {
     }
   } else {
     lcd.print("Reverb:      OFF");
-    Serial.write(50);
+    Serial.write(reverbDesactivated);
     Serial.flush();
   }
 }
