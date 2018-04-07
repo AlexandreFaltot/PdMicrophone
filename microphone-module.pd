@@ -1,5 +1,5 @@
-#N canvas 423 178 866 553 10;
-#N canvas 447 272 919 453 microphone 1;
+#N canvas 129 57 866 553 10;
+#N canvas 472 413 919 453 microphone 1;
 #N canvas 179 451 826 390 reverb 0;
 #X obj 197 212 freeverb~;
 #N canvas 1 80 450 300 inv 0;
@@ -45,7 +45,7 @@
 #X connect 15 1 1 0;
 #X connect 16 0 0 0;
 #X connect 16 0 0 1;
-#X restore 296 248 pd reverb;
+#X restore 194 280 pd reverb;
 #N canvas 207 303 742 539 pitch 0;
 #X floatatom 19 87 0 0 0 0 - - -;
 #X obj 81 361 *~;
@@ -141,20 +141,20 @@
 #X connect 45 1 47 0;
 #X connect 47 0 46 0;
 #X connect 48 0 46 0;
-#X restore 295 203 pd pitch;
-#X obj 475 183 hsl 150 20 -5 5 0 0 empty empty Pitch 0 -8 0 10 -262144
+#X restore 194 235 pd pitch;
+#X obj 475 278 hsl 150 20 -5 5 0 0 empty empty Pitch 0 -8 0 10 -262144
 -1 -1 7450 1;
-#X obj 472 125 receive pitch;
-#X obj 365 125 receive reverb;
-#X obj 474 228 hsl 150 20 0 1 0 0 empty empty Reverb 0 -8 0 10 -262144
+#X obj 364 261 receive pitch;
+#X obj 357 312 receive reverb;
+#X obj 474 329 hsl 150 20 0 1 0 0 empty empty Reverb 0 -8 0 10 -262144
 -1 -1 3725 1;
-#X text 475 231 dry;
-#X text 598 231 wet;
-#X obj 222 133 inlet~;
-#X obj 222 271 outlet~;
-#X obj 612 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X text 475 332 dry;
+#X text 598 332 wet;
+#X obj 120 94 inlet~;
+#X obj 120 303 outlet~;
+#X obj 612 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 611 210 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 611 311 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #N canvas 318 205 528 349 sound_detector 0;
 #X obj 312 133 env~;
@@ -193,11 +193,58 @@
 #X connect 13 0 14 0;
 #X connect 15 0 13 0;
 #X connect 18 0 10 0;
-#X restore 222 156 pd sound_detector;
-#X obj 644 148 receive pitch_activate;
-#X obj 644 193 receive reverb_activate;
-#X obj 222 226 audioroute~;
-#X obj 222 180 audioroute~;
+#X restore 120 117 pd sound_detector;
+#X obj 644 243 receive pitch_activate;
+#X obj 644 294 receive reverb_activate;
+#X obj 120 258 audioroute~;
+#X obj 120 212 audioroute~;
+#N canvas 0 22 700 351 echo 0;
+#X obj 89 203 inlet~;
+#X obj 143 233 *~ 0.5;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array delaysound 500 float 3;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#X coords 0 1 500 -1 200 140 1;
+#X restore 404 147 graph;
+#X obj 195 187 inlet;
+#X obj 195 210 delread~ delaysound 1000;
+#X obj 195 233 outlet~;
+#X obj 143 256 delwrite~ delaysound 5000;
+#X obj 148 187 inlet;
+#X floatatom 148 209 5 0 0 0 - - -, f 5;
+#X connect 0 0 5 0;
+#X connect 0 0 6 0;
+#X connect 1 0 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 4 0 5 0;
+#X connect 7 0 1 1;
+#X connect 7 0 8 0;
+#X restore 194 188 pd echo;
+#X obj 120 165 audioroute~;
+#X obj 474 188 hsl 150 20 0 1000 0 0 empty empty Delay -2 -8 0 10 -262144
+-1 -1 11175 1;
+#X obj 611 170 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 474 223 hsl 150 20 0 0.5 0 0 empty empty Intensity -2 -8 0 10
+-262144 -1 -1 14900 1;
+#X obj 644 153 receive delay_activate;
+#X obj 322 171 receive delay_value;
+#X obj 294 206 receive delay_intensity;
 #X connect 0 0 9 0;
 #X connect 1 0 15 0;
 #X connect 2 0 1 1;
@@ -207,35 +254,45 @@
 #X connect 8 0 12 0;
 #X connect 10 0 16 1;
 #X connect 11 0 15 1;
-#X connect 12 0 16 0;
+#X connect 12 0 18 0;
 #X connect 13 0 10 0;
 #X connect 14 0 11 0;
 #X connect 15 0 9 0;
 #X connect 15 1 0 0;
 #X connect 16 0 15 0;
 #X connect 16 1 1 0;
-#X coords 0 -1 1 1 180 110 1 460 150;
-#X restore 416 196 pd microphone;
+#X connect 17 0 16 0;
+#X connect 18 0 16 0;
+#X connect 18 1 17 0;
+#X connect 19 0 17 2;
+#X connect 20 0 18 1;
+#X connect 21 0 17 1;
+#X connect 22 0 20 0;
+#X connect 23 0 19 0;
+#X connect 24 0 21 0;
+#X coords 0 -1 1 1 180 210 1 460 150;
+#X restore 416 194 pd microphone;
 #X obj 416 154 adc~;
 #N canvas 165 90 665 191 signal 0;
 #N canvas 0 50 450 250 (subpatch) 0;
 #X array Signal 100 float 5;
-#A 0 0.00122193 0.00296554 0.00365914 0.00535847 0.00638082 0.00595016
-0.00604989 0.0077726 0.00841145 0.00970118 0.0094862 0.00812842 0.00851653
-0.00899102 0.0093658 0.00910136 0.00998511 0.00999525 0.0103198 0.00927078
-0.00773829 0.00603033 0.00361513 0.00165237 0.0018569 0.00194704 -0.000286972
--0.00258331 -0.00480113 -0.00709368 -0.0089836 -0.0109412 -0.0120516
--0.0126862 -0.0123988 -0.0122168 -0.0111683 -0.010615 -0.0112448 -0.0118224
--0.0134787 -0.0130697 -0.0113238 -0.00887783 -0.00725914 -0.00437799
--0.00256779 -0.00244596 -0.00292755 -0.00313221 -0.00166576 -0.000597887
-0.00141314 0.00236351 0.00393404 0.00523393 0.00634588 0.00615583 0.00397824
-0.00252248 0.0010458 0.00106397 0.00128274 0.000677262 -0.00268223
--0.00510175 -0.00608378 -0.0071523 -0.00871342 -0.0117514 -0.0143057
--0.0162961 -0.0176307 -0.0190058 -0.0190656 -0.0200239 -0.0227014 -0.0250179
--0.0264878 -0.0261997 -0.0253275 -0.0240008 -0.0231202 -0.0237448 -0.0233497
--0.0218348 -0.0179435 -0.0152746 -0.0144766 -0.0138712 -0.0113517 -0.00873237
--0.0061664 -0.00479392 -0.00461904 -0.00334791 -0.00278262 -0.00157462
--0.000664548 0.000151868;
+#A 0 -0.000180336 -0.000158523 -0.000222653 -0.000292935 -0.00032601
+-0.000303219 -0.000332306 -0.000282069 -0.000269143 -0.000286615 -0.000255376
+-0.000154908 -0.000169972 -0.00025475 -0.000153527 -0.000176582 -0.000151077
+-0.000118619 -3.26419e-05 1.04617e-05 -9.34457e-05 -0.000195718 -0.000349631
+-0.00043046 -0.000411192 -0.000447703 -0.000392559 -0.000483056 -0.000425121
+-0.000369398 -0.000511952 -0.000335933 -0.000284006 -0.00027782 -0.000168861
+-0.000173203 -0.000126817 -6.97109e-05 -8.49246e-05 -0.000145286 -0.000322743
+-0.000353869 -0.000291191 -0.000255853 -0.000144312 -7.78672e-05 -0.00012929
+-0.000233984 -0.000172834 -3.81651e-05 6.99673e-05 0.000101522 4.23603e-05
+-9.62288e-06 1.57418e-05 0.00011165 0.000158162 0.000225122 0.000239679
+0.000176256 0.000144202 0.000180277 0.000222376 0.000289836 0.000353285
+0.000449087 0.000396056 0.000193266 0.00025449 0.000267216 0.000215138
+0.000373335 0.000432775 0.000485686 0.00051004 0.000529915 0.000634147
+0.000558098 0.000604388 0.000676276 0.000592994 0.000562748 0.000525405
+0.000605411 0.000623855 0.000565002 0.000615941 0.00047419 0.00025865
+0.000135899 9.7824e-05 0.000267788 0.000366493 0.000286697 0.000255918
+0.000129983 0.000145115 0.000205974 0.000270862 0.000334403;
 #X coords 0 1 99 -1 200 140 2 0 0;
 #X restore 100 40 graph;
 #X obj 481 88 metro 40;
@@ -456,12 +513,12 @@
 #X restore 34 194 pd soundboard;
 #X obj 661 316 dac~ 3 4;
 #X obj 624 316 dac~;
-#X obj 615 28 loadbang;
+#X obj 614 4 loadbang;
 #X obj 34 499 send~ soundboard_signal;
-#X obj 416 311 send~ microphone_signal;
-#X obj 615 198 receive~ soundboard_signal;
-#X obj 621 219 receive~ microphone_signal;
-#X obj 615 239 send~ final_sound;
+#X obj 416 411 send~ microphone_signal;
+#X obj 614 208 receive~ soundboard_signal;
+#X obj 620 229 receive~ microphone_signal;
+#X obj 614 249 send~ final_sound;
 #X obj 614 275 receive~ final_sound;
 #N canvas 271 282 1041 300 arduino 0;
 #X obj 70 72 comport 3 9600;
@@ -514,9 +571,10 @@
 #X obj 168 106 send soundboard;
 #X obj 460 106 send pitch;
 #X floatatom 168 29 5 0 0 0 - - -, f 5;
-#X msg 615 52 \; pd dsp 1 \; arduino open 3 \; visualization bang \;
-noise_detect 60 \; reverb 0.25 \; reverb_activate 0 \; reverb_value
-roomsize 1 \; pitch 0 \; pitch_activate 0 \;, f 25;
+#X msg 614 28 \; pd dsp 1 \; arduino open 3 \; visualization bang \;
+noise_detect 60 \; delay_activate 0 \; delay_value 750 \; delay_intensity
+0.5 \; reverb 0.25 \; reverb_activate 0 \; reverb_value roomsize 1
+\; pitch 0 \; pitch_activate 0 \;, f 25;
 #X connect 0 0 8 0;
 #X connect 1 0 0 0;
 #X connect 1 1 0 0;
@@ -524,11 +582,11 @@ roomsize 1 \; pitch 0 \; pitch_activate 0 \;, f 25;
 #X connect 6 0 18 0;
 #X connect 9 0 11 0;
 #X connect 10 0 11 0;
-#X connect 12 0 5 0;
-#X connect 12 0 5 1;
 #X connect 12 0 4 0;
 #X connect 12 0 4 1;
 #X connect 12 0 2 0;
+#X connect 12 0 5 0;
+#X connect 12 0 5 1;
 #X connect 13 0 15 0;
 #X connect 13 1 14 0;
 #X connect 13 2 16 0;
